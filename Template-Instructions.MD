@@ -25,7 +25,7 @@ Abrir una terminal en el directorio raíz del proyecto y correr el siguiente com
 
 Para Linux/Mac:
 ```
-./mvnw clean install
+mvnw.cmd clean install
 ```
 
 

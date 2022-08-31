@@ -29,6 +29,8 @@ import static lyc.compiler.constants.Constants.*;
 %}
 
 
+///-----------Elementos terminales---------
+
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 Identation =  [ \t\f]
@@ -43,10 +45,19 @@ CloseBracket = ")"
 Letter = [a-zA-Z]
 Digit = [0-9]
 
+//Acá van los nuestros//
+OpenComment = "/*"
+CloseComment = "*/"
+
+///-------Elementos NO terminales----------
+
 WhiteSpace = {LineTerminator} | {Identation}
 Identifier = {Letter} ({Letter}|{Digit})*
 IntegerConstant = {Digit}+
 
+//Acá van los nuestros//
+Alphanumeric = ({Letter} | {Digit})
+Comment = {OpenComment} {Alphanumeric}* {CloseComment}
 %%
 
 
@@ -69,6 +80,7 @@ IntegerConstant = {Digit}+
 
   /* whitespace */
   {WhiteSpace}                   { /* ignore */ }
+  {Comment}                      { /* ignore */ }
 }
 
 
