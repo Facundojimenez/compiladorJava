@@ -5,7 +5,7 @@ import java_cup.runtime.*;
 class Parser;
 
 
-// Terminals
+//--------- Terminals
 terminal ASSIG;
 terminal PLUS;
 terminal SUB;
@@ -16,12 +16,18 @@ terminal CLOSE_BRACKET;
 terminal INTEGER_CONSTANT;
 terminal IDENTIFIER;
 
-// Non Terminals
+//Aca van los nuestros
+
+
+
+//--------- Non Terminals
 non terminal sentence;
 non terminal assignment;
 non terminal expression;
 non terminal term;
 non terminal factor;
+
+//Aca van los nuestros
 
 // Start Symbol Definition
 start with sentence;
@@ -38,8 +44,7 @@ factor ::= IDENTIFIER:id  {: System.out.println("Id: " + id); :};
 factor ::= INTEGER_CONSTANT:constant {: System.out.println("Constant: " + constant ); :};
 factor ::= OPEN_BRACKET expression CLOSE_BRACKET {: System.out.println("Factor = (Expression)"); :};
 
-//Acá abajo van nuestras propias definiciones
-
+//acá abajo van nuestras definiciones de NO terminales
 
 
 

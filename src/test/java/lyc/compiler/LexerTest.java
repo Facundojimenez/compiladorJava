@@ -23,12 +23,12 @@ public class LexerTest {
 
   private Lexer lexer;
 
-  @Disabled
   @Test
   public void comment() throws Exception{
     scan("/*This is a comment*/");
     assertThat(nextToken()).isEqualTo(ParserSym.EOF);
   }
+
 
   @Disabled
   @Test

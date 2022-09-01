@@ -46,8 +46,6 @@ Letter = [a-zA-Z]
 Digit = [0-9]
 
 //Acá van los nuestros//
-OpenComment = "/*"
-CloseComment = "*/"
 
 ///-------Elementos NO terminales----------
 
@@ -56,8 +54,9 @@ Identifier = {Letter} ({Letter}|{Digit})*
 IntegerConstant = {Digit}+
 
 //Acá van los nuestros//
-Alphanumeric = ({Letter} | {Digit})
-Comment = {OpenComment} {Alphanumeric}* {CloseComment}
+CommentContent = ( [^*] | \*+ [^/*] )*
+Comment = "/*" {CommentContent} "*"+ "/"
+
 %%
 
 
@@ -79,8 +78,11 @@ Comment = {OpenComment} {Alphanumeric}* {CloseComment}
   {CloseBracket}                            { return symbol(ParserSym.CLOSE_BRACKET); }
 
   /* whitespace */
-  {WhiteSpace}                   { /* ignore */ }
-  {Comment}                      { /* ignore */ }
+  {WhiteSpace}                             { /* ignore */ }
+
+  /*Aca van los nuestros*/
+  {Comment}                                { return symbol(ParserSym.EOF); }
+
 }
 
 
