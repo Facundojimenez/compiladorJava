@@ -57,7 +57,13 @@ IntegerConstant = {Digit}+
 Comment = "/*" ({Letter}|{Digit}|" "|\*)* "*/"
 
 
-//Palabras reservadas
+//palabras reservadas que pide el enunciado
+Init = "init"
+Colon = ":"
+Read = "read"
+Write = "write"
+
+///palabras reservadas de java
 If = "if"
 Else = "else"
 While = "while"
@@ -79,6 +85,13 @@ False = "false"
 <YYINITIAL> {
    /*------Aca van los nuestros------*/
   {Comment}                                { return symbol(ParserSym.EOF); }
+
+  {Init}                                { return symbol(ParserSym.INIT); }
+  {Colon}                                { return symbol(ParserSym.COLON); }
+  {Read}                                { return symbol(ParserSym.READ); }
+  {Write}                                { return symbol(ParserSym.WRITE); }
+
+
   {If}                                     { return symbol(ParserSym.IF); }
   {Else}                                     { return symbol(ParserSym.ELSE); }
   {While}                                     { return symbol(ParserSym.WHILE); }

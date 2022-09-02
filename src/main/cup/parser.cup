@@ -17,6 +17,14 @@ terminal INTEGER_CONSTANT;
 terminal IDENTIFIER;
 
 //Aca van los nuestros
+
+//palabras reservadas que pide el enunciado
+terminal INIT; // declarar un bloque de variables
+terminal COLON; //Son los dos puntos " : "
+terminal READ; //entrada
+terminal WRITE; //salida
+
+///palabras reservadas de java
 terminal IF;
 terminal ELSE;
 terminal WHILE;

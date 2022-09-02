@@ -27,6 +27,30 @@ public class LexerTest {
   /* ----Acá van nuestras pruebas */
 
   @Test
+  public void r_init() throws Exception{
+    scan("init");
+    assertThat(nextToken()).isEqualTo(ParserSym.INIT);
+  }
+
+  @Test
+  public void r_colon() throws Exception{
+    scan(":");
+    assertThat(nextToken()).isEqualTo(ParserSym.COLON);
+  }
+
+  @Test
+  public void r_read() throws Exception{
+    scan("read");
+    assertThat(nextToken()).isEqualTo(ParserSym.READ);
+  }
+
+  @Test
+  public void r_write() throws Exception{
+    scan("write");
+    assertThat(nextToken()).isEqualTo(ParserSym.WRITE);
+  }
+
+  @Test
   public void r_if() throws Exception{
     scan("if");
     assertThat(nextToken()).isEqualTo(ParserSym.IF);
