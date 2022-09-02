@@ -17,6 +17,16 @@ terminal INTEGER_CONSTANT;
 terminal IDENTIFIER;
 
 //Aca van los nuestros
+terminal IF;
+terminal ELSE;
+terminal WHILE;
+terminal FOR;
+terminal INT;
+terminal FLOAT;
+terminal STRING;
+terminal BOOLEAN;
+terminal TRUE;
+terminal FALSE;
 
 
 

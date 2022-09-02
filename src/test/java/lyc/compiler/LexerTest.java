@@ -23,6 +23,70 @@ public class LexerTest {
 
   private Lexer lexer;
 
+
+  /* ----Acá van nuestras pruebas */
+
+  @Test
+  public void r_if() throws Exception{
+    scan("if");
+    assertThat(nextToken()).isEqualTo(ParserSym.IF);
+  }
+
+  @Test
+  public void r_else() throws Exception{
+    scan("else");
+    assertThat(nextToken()).isEqualTo(ParserSym.ELSE);
+  }
+
+  @Test
+  public void r_while() throws Exception{
+    scan("while");
+    assertThat(nextToken()).isEqualTo(ParserSym.WHILE);
+  }
+
+  @Test
+  public void r_for() throws Exception{
+    scan("for");
+    assertThat(nextToken()).isEqualTo(ParserSym.FOR);
+  }
+
+  @Test
+  public void r_int() throws Exception{
+    scan("int");
+    assertThat(nextToken()).isEqualTo(ParserSym.INT);
+  }
+
+  @Test
+  public void r_float() throws Exception{
+    scan("float");
+    assertThat(nextToken()).isEqualTo(ParserSym.FLOAT);
+  }
+
+  @Test
+  public void r_string() throws Exception{
+    scan("string");
+    assertThat(nextToken()).isEqualTo(ParserSym.STRING);
+  }
+
+  @Test
+  public void r_boolean() throws Exception{
+    scan("boolean");
+    assertThat(nextToken()).isEqualTo(ParserSym.BOOLEAN);
+  }
+
+  @Test
+  public void r_true() throws Exception{
+    scan("true");
+    assertThat(nextToken()).isEqualTo(ParserSym.TRUE);
+  }
+
+  @Test
+  public void r_false() throws Exception{
+    scan("false");
+    assertThat(nextToken()).isEqualTo(ParserSym.FALSE);
+  }
+  /* ----Acá van nuestras pruebas */
+
   @Test
   public void comment() throws Exception{
     scan("/*This is a comment*/");
@@ -66,7 +130,6 @@ public class LexerTest {
     });
   }
 
-  @Disabled
   @Test
   public void assignmentWithExpressions() throws Exception {
     scan("c=d*(e-21)/4");
@@ -84,7 +147,6 @@ public class LexerTest {
     assertThat(nextToken()).isEqualTo(ParserSym.EOF);
   }
 
-  @Disabled
   @Test
   public void unknownCharacter() {
     assertThrows(UnknownCharacterException.class, () -> {

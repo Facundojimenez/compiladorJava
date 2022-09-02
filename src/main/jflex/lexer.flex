@@ -54,16 +54,45 @@ Identifier = {Letter} ({Letter}|{Digit})*
 IntegerConstant = {Digit}+
 
 //Acá van los nuestros//
-CommentContent = ( [^*] | \*+ [^/*] )*
-Comment = "/*" {CommentContent} "*"+ "/"
+Comment = "/*" ({Letter}|{Digit}|" "|\*)* "*/"
+
+
+//Palabras reservadas
+If = "if"
+Else = "else"
+While = "while"
+For = "for"
+Int = "int"
+Float = "float"
+String = "string"
+Boolean = "boolean"
+True = "true"
+False = "false"
 
 %%
 
 
 /* keywords */
 
+//Hay que listar los tokens de más especificos a menos específico, porque sino te los va a reconocer mal
+
 <YYINITIAL> {
+   /*------Aca van los nuestros------*/
+  {Comment}                                { return symbol(ParserSym.EOF); }
+  {If}                                     { return symbol(ParserSym.IF); }
+  {Else}                                     { return symbol(ParserSym.ELSE); }
+  {While}                                     { return symbol(ParserSym.WHILE); }
+  {For}                                     { return symbol(ParserSym.FOR); }
+  {Int}                                     { return symbol(ParserSym.INT); }
+  {Float}                                     { return symbol(ParserSym.FLOAT); }
+  {String}                                     { return symbol(ParserSym.STRING); }
+  {Boolean}                                     { return symbol(ParserSym.BOOLEAN); }
+  {True}                                     { return symbol(ParserSym.TRUE); }
+  {False}                                     { return symbol(ParserSym.FALSE); }
+   /* -----------*/
+
   /* identifiers */
+
   {Identifier}                             { return symbol(ParserSym.IDENTIFIER, yytext()); }
   /* Constants */
   {IntegerConstant}                        { return symbol(ParserSym.INTEGER_CONSTANT, yytext()); }
@@ -79,10 +108,6 @@ Comment = "/*" {CommentContent} "*"+ "/"
 
   /* whitespace */
   {WhiteSpace}                             { /* ignore */ }
-
-  /*Aca van los nuestros*/
-  {Comment}                                { return symbol(ParserSym.EOF); }
-
 }
 
 
