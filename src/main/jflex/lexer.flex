@@ -2,7 +2,7 @@ package lyc.compiler;
 
 import java_cup.runtime.Symbol;
 import lyc.compiler.ParserSym;
-import lyc.compiler.model.*;
+import lyc.compiler.constants.Constants;import lyc.compiler.model.*;
 import static lyc.compiler.constants.Constants.*;
 
 %%
@@ -29,37 +29,43 @@ import static lyc.compiler.constants.Constants.*;
 %}
 
 
-///-----------Elementos terminales---------
+/* Operadores y elementos básicos*/
 
 LineTerminator = \r|\n|\r\n
 InputCharacter = [^\r\n]
 Identation =  [ \t\f]
-
-Plus = "+"
-Mult = "*"
-Sub = "-"
-Div = "/"
-Assig = "="
-OpenBracket = "("
-CloseBracket = ")"
+WhiteSpace = {LineTerminator} | {Identation}
 Letter = [a-zA-Z]
 Digit = [0-9]
 
-//Acá van los nuestros//
 
-///-------Elementos NO terminales----------
+OP_PLUS = "+"
+OP_MULT = "*"
+OP_SUB = "-"
+OP_DIV = "/"
+OP_ASIG = "="
 
-WhiteSpace = {LineTerminator} | {Identation}
+OpenBracket = "("
+CloseBracket = ")"
+Colon = ":"
+Semicolon = ";"
+
+
+
+//Identificadores y constantes//
 Identifier = {Letter} ({Letter}|{Digit})*
-IntegerConstant = {Digit}+
+IntegerConstant = {Digit}{1,5}  ///temporalmente uso este hasta desbuggear el otro con el signo negativo
+//IntegerConstant = -?{Digit}{1,5}
+FloatConstant = {Digit}+"."{Digit}+
+StringConstant = \"({Letter}|{Digit}|" ")+\"
 
-//Acá van los nuestros//
+
+/* varios*/
 Comment = "/*" ({Letter}|{Digit}|" "|\*)* "*/"
-
+/* -------*/
 
 //palabras reservadas que pide el enunciado
 Init = "init"
-Colon = ":"
 Read = "read"
 Write = "write"
 
@@ -104,18 +110,36 @@ False = "false"
   {False}                                     { return symbol(ParserSym.FALSE); }
    /* -----------*/
 
-  /* identifiers */
 
+  /* identifiers */
   {Identifier}                             { return symbol(ParserSym.IDENTIFIER, yytext()); }
   /* Constants */
-  {IntegerConstant}                        { return symbol(ParserSym.INTEGER_CONSTANT, yytext()); }
+  {IntegerConstant}                        {
+                                                if(Integer.parseInt(yytext()) > 32767 || Integer.parseInt(yytext()) < -32768){
+                                                    throw new InvalidIntegerException(yytext());
+                                                }
+                                                return symbol(ParserSym.INTEGER_CONSTANT, yytext());
+                                           }
+  {FloatConstant}                          {
+                                                  if(Float.parseFloat(yytext()) > 2147483647 || Float.parseFloat(yytext()) < -2147483648){
+                                                      throw new InvalidFloatException(yytext());
+                                                  }
+                                                  return symbol(ParserSym.FLOAT_CONSTANT, yytext());
+                                            }
+   {StringConstant}                         {
+                                                    if(yytext().length() > MAX_LENGTH){
+                                                        throw new InvalidLengthException(yytext());
+                                                    }
+                                                    return symbol(ParserSym.STRING_CONSTANT, yytext());
+                                            }
+
 
   /* operators */
-  {Plus}                                    { return symbol(ParserSym.PLUS); }
-  {Sub}                                     { return symbol(ParserSym.SUB); }
-  {Mult}                                    { return symbol(ParserSym.MULT); }
-  {Div}                                     { return symbol(ParserSym.DIV); }
-  {Assig}                                   { return symbol(ParserSym.ASSIG); }
+  {OP_PLUS}                                    { return symbol(ParserSym.PLUS); }
+  {OP_SUB}                                     { return symbol(ParserSym.SUB); }
+  {OP_MULT}                                    { return symbol(ParserSym.MULT); }
+  {OP_DIV}                                     { return symbol(ParserSym.DIV); }
+  {OP_ASIG}                                   { return symbol(ParserSym.ASSIG); }
   {OpenBracket}                             { return symbol(ParserSym.OPEN_BRACKET); }
   {CloseBracket}                            { return symbol(ParserSym.CLOSE_BRACKET); }
 

@@ -3,6 +3,7 @@ package lyc.compiler;
 import lyc.compiler.factories.LexerFactory;
 import lyc.compiler.model.CompilerException;
 import lyc.compiler.model.InvalidIntegerException;
+import lyc.compiler.model.InvalidFloatException;
 import lyc.compiler.model.InvalidLengthException;
 import lyc.compiler.model.UnknownCharacterException;
 import org.apache.commons.text.CharacterPredicates;
@@ -109,7 +110,23 @@ public class LexerTest {
     scan("false");
     assertThat(nextToken()).isEqualTo(ParserSym.FALSE);
   }
-  /* ----Acá van nuestras pruebas */
+
+  @Test
+  public void validPositiveFloatConstantValue() throws Exception{
+    scan("1.5");
+    assertThat(nextToken()).isEqualTo(ParserSym.FLOAT_CONSTANT);
+  }
+
+  @Test
+  public void invalidPositiveFloatConstantValue() {
+    assertThrows(InvalidFloatException.class, () -> {
+      scan("55555555555555555.50");
+      nextToken();
+    });
+  }
+
+
+  /* ------------------------------- */
 
   @Test
   public void comment() throws Exception{
@@ -118,7 +135,7 @@ public class LexerTest {
   }
 
 
-  @Disabled
+
   @Test
   public void invalidStringConstantLength() {
     assertThrows(InvalidLengthException.class, () -> {
@@ -136,7 +153,6 @@ public class LexerTest {
     });
   }
 
-  @Disabled
   @Test
   public void invalidPositiveIntegerConstantValue() {
     assertThrows(InvalidIntegerException.class, () -> {
@@ -144,6 +160,8 @@ public class LexerTest {
       nextToken();
     });
   }
+
+
 
   @Disabled
   @Test
