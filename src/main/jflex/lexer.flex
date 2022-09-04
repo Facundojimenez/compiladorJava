@@ -45,8 +45,12 @@ OP_SUB = "-"
 OP_DIV = "/"
 OP_ASIG = "="
 
-OpenBracket = "("
-CloseBracket = ")"
+OpenParenthesis = "("
+CloseParenthesis = ")"
+OpenSqrBracket = "["
+CloseSqrBracket = "}"
+OpenBracket = "{"
+CloseBracket = "}"
 Colon = ":"
 Semicolon = ";"
 
@@ -93,7 +97,6 @@ False = "false"
   {Comment}                                { return symbol(ParserSym.EOF); }
 
   {Init}                                { return symbol(ParserSym.INIT); }
-  {Colon}                                { return symbol(ParserSym.COLON); }
   {Read}                                { return symbol(ParserSym.READ); }
   {Write}                                { return symbol(ParserSym.WRITE); }
 
@@ -142,6 +145,12 @@ False = "false"
   {OP_ASIG}                                   { return symbol(ParserSym.ASSIG); }
   {OpenBracket}                             { return symbol(ParserSym.OPEN_BRACKET); }
   {CloseBracket}                            { return symbol(ParserSym.CLOSE_BRACKET); }
+  {OpenSqrBracket}                             { return symbol(ParserSym.OPEN_SQR_BRACKET); }
+  {CloseSqrBracket}                             { return symbol(ParserSym.CLOSE_SQR_BRACKET); }
+  {OpenParenthesis}                             { return symbol(ParserSym.OPEN_PAR); }
+  {CloseParenthesis}                             { return symbol(ParserSym.CLOSE_PAR); }
+  {Colon}                                    { return symbol(ParserSym.COLON); }
+  {Semicolon}                                { return symbol(ParserSym.SEMI_COLON); }
 
   /* whitespace */
   {WhiteSpace}                             { /* ignore */ }

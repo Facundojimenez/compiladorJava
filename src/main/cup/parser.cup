@@ -11,11 +11,11 @@ terminal PLUS;
 terminal SUB;
 terminal MULT;
 terminal DIV;
-terminal OPEN_BRACKET;
+terminal OPEN_BRACKET; // {
 terminal CLOSE_BRACKET;
-terminal OPEN_SQR_BRACKET;
+terminal OPEN_SQR_BRACKET; // [
 terminal CLOSE_SQR_BRACKET;
-terminal OPEN_PAR;
+terminal OPEN_PAR;          // (
 terminal CLOSE_PAR;
 terminal INTEGER_CONSTANT;
 terminal FLOAT_CONSTANT;
@@ -27,6 +27,7 @@ terminal IDENTIFIER;
 //palabras reservadas que pide el enunciado
 terminal INIT; // declarar un bloque de variables
 terminal COLON; //Son los dos puntos " : "
+terminal SEMI_COLON; //Son los dos puntos ";"
 terminal READ; //entrada
 terminal WRITE; //salida
 
