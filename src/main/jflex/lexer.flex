@@ -58,9 +58,8 @@ Semicolon = ";"
 
 //Identificadores y constantes//
 Identifier = {Letter} ({Letter}|{Digit})*
-IntegerConstant = {Digit}{1,5}  ///temporalmente uso este hasta desbuggear el otro con el signo negativo
-//IntegerConstant = -?{Digit}{1,5}
-FloatConstant = {Digit}+"."{Digit}+
+IntegerConstant = "-"?{Digit}{1,5}
+FloatConstant = "-"?{Digit}+"."{Digit}+
 StringConstant = \"({Letter}|{Digit}|" ")+\"
 
 
