@@ -144,7 +144,7 @@ public class LexerTest {
     });
   }
 
-  @Disabled
+//  @Disabled
   @Test
   public void invalidIdLength() {
     assertThrows(InvalidLengthException.class, () -> {

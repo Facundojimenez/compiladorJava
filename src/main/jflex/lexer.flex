@@ -114,7 +114,12 @@ False = "false"
 
 
   /* identifiers */
-  {Identifier}                             { return symbol(ParserSym.IDENTIFIER, yytext()); }
+  {Identifier}                             {
+                                             if(yytext().length() > MAX_LENGTH){
+                                                 throw new InvalidLengthException(yytext());
+                                             }
+                                             return symbol(ParserSym.IDENTIFIER, yytext());
+                                            }
   /* Constants */
   {IntegerConstant}                        {
                                                 if(Integer.parseInt(yytext()) > 32767 || Integer.parseInt(yytext()) < -32768){
