@@ -64,7 +64,7 @@ StringConstant = \"({Letter}|{Digit}|" "|"@"|"%")+\"
 
 
 /* varios*/
-Comment = "/*" ({Letter}|{Digit}|" "|\*)* "*/"
+Comment = "/*" .* "*/"
 /* -------*/
 
 //palabras reservadas que pide el enunciado
@@ -94,8 +94,7 @@ False = "false"
 <YYINITIAL> {
    /*------Aca van los nuestros------*/
 
-  {LineTerminator}                                {System.out.println("Line Terminator"); return symbol(ParserSym.EOF);  }
-  {Comment}                                {System.out.println("comment"); return symbol(ParserSym.EOF);  }
+  {Comment}                                {System.out.println("comment"); }
   {Init}                                {System.out.println("INIT"); return symbol(ParserSym.INIT); }
   {Read}                                {System.out.println("READ"); return symbol(ParserSym.READ); }
   {Write}                                {System.out.println("WRITE"); return symbol(ParserSym.WRITE); }

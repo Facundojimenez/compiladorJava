@@ -47,6 +47,8 @@ terminal FALSE;
 
 //--------- Non Terminals
 
+non terminal program;
+non terminal block;
 non terminal sentence;
 non terminal assignment;
 non terminal expression;
@@ -58,10 +60,15 @@ non terminal factor;
 // Start Symbol Definition
 
 
-start with sentence;
-
+start with program;
+program ::= block;
+block ::= block sentence;
+block ::= sentence;
 sentence ::= assignment {: System.out.println("End"); :};
-sentence ::= ; ///Retorna vacio cuando solo hay comentarios en el código, es como un Lambda
+sentence ::= WRITE OPEN_PAR STRING_CONSTANT CLOSE_PAR {: System.out.println("Write CONST"); :};
+sentence ::= WRITE OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Write I"); :};
+
+
 assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
 assignment ::= IDENTIFIER ASSIG STRING_CONSTANT {: System.out.println("Assignment"); :};
 expression ::= expression PLUS term {: System.out.println("+"); :};

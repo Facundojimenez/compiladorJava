@@ -34,7 +34,7 @@ public class ParserTest {
         compilationSuccessful(readFromFile("assignments.txt"));
     }
 
-    @Disabled
+//    @Disabled
     @Test
     void write() throws Exception {
         compilationSuccessful(readFromFile("write.txt"));
