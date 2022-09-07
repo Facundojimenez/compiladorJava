@@ -99,11 +99,10 @@ factor ::= FLOAT_CONSTANT:constant {: System.out.println("Float Constant: " + co
 factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("Factor = (Expression)"); :};
 
 if_expresion ::= IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET | IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET ELSE OPEN_BRACKET block CLOSE_BRACKET;
-logic_condition ::= logic_expression OP_AND logic_expression | logic_expression OP_OR logic_expression | OP_NOT logic_expression;
-logic_condition ::= logic_expression;
-logic_expression ::= factor OP_GT factor;
+logic_condition ::= logic_expression OP_AND logic_expression | logic_expression OP_OR logic_expression; ///esta ultima parte está dudosa
+logic_condition ::= logic_expression | OP_NOT logic_expression;
+logic_expression ::= factor OP_GT factor | factor OP_GE factor | factor OP_LT factor | factor OP_LE factor | factor OP_NE factor | factor OP_EQ factor;
 
-//acá abajo van nuestras definiciones de NO terminales
 
 
 

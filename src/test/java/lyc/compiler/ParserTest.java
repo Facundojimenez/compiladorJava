@@ -58,19 +58,19 @@ public class ParserTest {
         compilationSuccessful(readFromFile("init.txt"));
     }
 
-    @Disabled
+//    @Disabled
     @Test
     void and() throws Exception {
         compilationSuccessful(readFromFile("and.txt"));
     }
 
-    @Disabled
+//    @Disabled
     @Test
     void or() throws Exception {
         compilationSuccessful(readFromFile("or.txt"));
     }
 
-    @Disabled
+//    @Disabled
     @Test
     void not() throws Exception {
         compilationSuccessful(readFromFile("not.txt"));

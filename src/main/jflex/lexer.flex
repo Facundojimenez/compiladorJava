@@ -51,7 +51,7 @@ OP_LE = "<="
 OP_EQ = "=="
 OP_NE = "!="
 OP_NOT = "!"
-OP_AND = "&&"
+OP_AND = "&"
 OP_OR = "||"
 
 OpenParenthesis = "("
