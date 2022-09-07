@@ -48,7 +48,7 @@ OP_ASIG = "="
 OpenParenthesis = "("
 CloseParenthesis = ")"
 OpenSqrBracket = "["
-CloseSqrBracket = "}"
+CloseSqrBracket = "]"
 OpenBracket = "{"
 CloseBracket = "}"
 Colon = ":"
@@ -59,8 +59,8 @@ Semicolon = ";"
 //Identificadores y constantes//
 Identifier = {Letter} ({Letter}|{Digit})*
 IntegerConstant = "-"?{Digit}{1,5}
-FloatConstant = "-"?{Digit}+"."{Digit}+
-StringConstant = \"({Letter}|{Digit}|" ")+\"
+FloatConstant = ("-"?{Digit}+)?"."{Digit}*
+StringConstant = \"({Letter}|{Digit}|" "|"@"|"%")+\"
 
 
 /* varios*/
@@ -93,23 +93,24 @@ False = "false"
 
 <YYINITIAL> {
    /*------Aca van los nuestros------*/
-  {Comment}                                { return symbol(ParserSym.EOF); }
 
-  {Init}                                { return symbol(ParserSym.INIT); }
-  {Read}                                { return symbol(ParserSym.READ); }
-  {Write}                                { return symbol(ParserSym.WRITE); }
+  {LineTerminator}                                {System.out.println("Line Terminator"); return symbol(ParserSym.EOF);  }
+  {Comment}                                {System.out.println("comment"); return symbol(ParserSym.EOF);  }
+  {Init}                                {System.out.println("INIT"); return symbol(ParserSym.INIT); }
+  {Read}                                {System.out.println("READ"); return symbol(ParserSym.READ); }
+  {Write}                                {System.out.println("WRITE"); return symbol(ParserSym.WRITE); }
 
 
-  {If}                                     { return symbol(ParserSym.IF); }
-  {Else}                                     { return symbol(ParserSym.ELSE); }
-  {While}                                     { return symbol(ParserSym.WHILE); }
-  {For}                                     { return symbol(ParserSym.FOR); }
-  {Int}                                     { return symbol(ParserSym.INT); }
-  {Float}                                     { return symbol(ParserSym.FLOAT); }
-  {String}                                     { return symbol(ParserSym.STRING); }
-  {Boolean}                                     { return symbol(ParserSym.BOOLEAN); }
-  {True}                                     { return symbol(ParserSym.TRUE); }
-  {False}                                     { return symbol(ParserSym.FALSE); }
+  {If}                                     {System.out.println("IF"); return symbol(ParserSym.IF); }
+  {Else}                                     {System.out.println("ELSE"); return symbol(ParserSym.ELSE); }
+  {While}                                     {System.out.println("WHILE"); return symbol(ParserSym.WHILE); }
+  {For}                                     {System.out.println("FOR"); return symbol(ParserSym.FOR); }
+  {Int}                                     {System.out.println("INT"); return symbol(ParserSym.INT); }
+  {Float}                                     {System.out.println("FLOAT"); return symbol(ParserSym.FLOAT); }
+  {String}                                     {System.out.println("STRING"); return symbol(ParserSym.STRING); }
+  {Boolean}                                     {System.out.println("BOOLENA"); return symbol(ParserSym.BOOLEAN); }
+  {True}                                     {System.out.println("TRUE"); return symbol(ParserSym.TRUE); }
+  {False}                                     {System.out.println("FALSE"); return symbol(ParserSym.FALSE); }
    /* -----------*/
 
 
@@ -118,6 +119,7 @@ False = "false"
                                              if(yytext().length() > MAX_LENGTH){
                                                  throw new InvalidLengthException(yytext());
                                              }
+                                             System.out.println("ID");
                                              return symbol(ParserSym.IDENTIFIER, yytext());
                                             }
   /* Constants */
@@ -125,36 +127,39 @@ False = "false"
                                                 if(Integer.parseInt(yytext()) > 32767 || Integer.parseInt(yytext()) < -32768){
                                                     throw new InvalidIntegerException(yytext());
                                                 }
+                                                System.out.println("INTEGER CONSTANT");
                                                 return symbol(ParserSym.INTEGER_CONSTANT, yytext());
                                            }
   {FloatConstant}                          {
                                                   if(Float.parseFloat(yytext()) > 2147483647 || Float.parseFloat(yytext()) < -2147483648){
                                                       throw new InvalidFloatException(yytext());
                                                   }
+                                                  System.out.println("FLOAT CONSTANT");
                                                   return symbol(ParserSym.FLOAT_CONSTANT, yytext());
                                             }
    {StringConstant}                         {
                                                     if(yytext().length() > MAX_LENGTH){
                                                         throw new InvalidLengthException(yytext());
                                                     }
+                                                    System.out.println("STRING CONSTANT");
                                                     return symbol(ParserSym.STRING_CONSTANT, yytext());
                                             }
 
 
   /* operators */
-  {OP_PLUS}                                    { return symbol(ParserSym.PLUS); }
-  {OP_SUB}                                     { return symbol(ParserSym.SUB); }
-  {OP_MULT}                                    { return symbol(ParserSym.MULT); }
-  {OP_DIV}                                     { return symbol(ParserSym.DIV); }
-  {OP_ASIG}                                   { return symbol(ParserSym.ASSIG); }
-  {OpenBracket}                             { return symbol(ParserSym.OPEN_BRACKET); }
-  {CloseBracket}                            { return symbol(ParserSym.CLOSE_BRACKET); }
-  {OpenSqrBracket}                             { return symbol(ParserSym.OPEN_SQR_BRACKET); }
-  {CloseSqrBracket}                             { return symbol(ParserSym.CLOSE_SQR_BRACKET); }
-  {OpenParenthesis}                             { return symbol(ParserSym.OPEN_PAR); }
-  {CloseParenthesis}                             { return symbol(ParserSym.CLOSE_PAR); }
-  {Colon}                                    { return symbol(ParserSym.COLON); }
-  {Semicolon}                                { return symbol(ParserSym.SEMI_COLON); }
+  {OP_PLUS}                                    {System.out.println("OP_PLUS"); return symbol(ParserSym.PLUS); }
+  {OP_SUB}                                     {System.out.println("OP_SUB"); return symbol(ParserSym.SUB); }
+  {OP_MULT}                                    {System.out.println("OP_MULT"); return symbol(ParserSym.MULT); }
+  {OP_DIV}                                     {System.out.println("OP_DIV"); return symbol(ParserSym.DIV); }
+  {OP_ASIG}                                   {System.out.println("OP_ASIG"); return symbol(ParserSym.ASSIG); }
+  {OpenBracket}                             {System.out.println("OPEN_BRACKER"); return symbol(ParserSym.OPEN_BRACKET); }
+  {CloseBracket}                            {System.out.println("CLOSE_BRACKET"); return symbol(ParserSym.CLOSE_BRACKET); }
+  {OpenSqrBracket}                             {System.out.println("OPEN_SQR_BRACKET"); return symbol(ParserSym.OPEN_SQR_BRACKET); }
+  {CloseSqrBracket}                             {System.out.println("CLOSE_SQR_BRACKET"); return symbol(ParserSym.CLOSE_SQR_BRACKET); }
+  {OpenParenthesis}                             {System.out.println("OPEN_PAR"); return symbol(ParserSym.OPEN_PAR); }
+  {CloseParenthesis}                             {System.out.println("CLOSE_PAR"); return symbol(ParserSym.CLOSE_PAR); }
+  {Colon}                                    {System.out.println("COLON"); return symbol(ParserSym.COLON); }
+  {Semicolon}                                {System.out.println("SEMI_COLON"); return symbol(ParserSym.SEMI_COLON); }
 
   /* whitespace */
   {WhiteSpace}                             { /* ignore */ }

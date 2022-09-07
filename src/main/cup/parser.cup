@@ -46,6 +46,7 @@ terminal FALSE;
 
 
 //--------- Non Terminals
+
 non terminal sentence;
 non terminal assignment;
 non terminal expression;
@@ -55,10 +56,14 @@ non terminal factor;
 //Aca van los nuestros
 
 // Start Symbol Definition
+
+
 start with sentence;
 
 sentence ::= assignment {: System.out.println("End"); :};
+sentence ::= ; ///Retorna vacio cuando solo hay comentarios en el código, es como un Lambda
 assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
+assignment ::= IDENTIFIER ASSIG STRING_CONSTANT {: System.out.println("Assignment"); :};
 expression ::= expression PLUS term {: System.out.println("+"); :};
 expression ::= expression SUB term {: System.out.println("-"); :};
 expression ::= term {: System.out.println("Expression = Term"); :};
@@ -66,8 +71,9 @@ term ::= term MULT factor {: System.out.println("*"); :};
 term ::= term DIV factor {: System.out.println("/"); :};
 term ::= factor {: System.out.println("Term = factor"); :};
 factor ::= IDENTIFIER:id  {: System.out.println("Id: " + id); :};
-factor ::= INTEGER_CONSTANT:constant {: System.out.println("Constant: " + constant ); :};
-factor ::= OPEN_BRACKET expression CLOSE_BRACKET {: System.out.println("Factor = (Expression)"); :};
+factor ::= INTEGER_CONSTANT:constant {: System.out.println("Integer Constant: " + constant ); :};
+factor ::= FLOAT_CONSTANT:constant {: System.out.println("Float Constant: " + constant ); :};
+factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("Factor = (Expression)"); :};
 
 //acá abajo van nuestras definiciones de NO terminales
 
