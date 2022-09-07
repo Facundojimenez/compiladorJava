@@ -44,6 +44,15 @@ OP_MULT = "*"
 OP_SUB = "-"
 OP_DIV = "/"
 OP_ASIG = "="
+OP_GT = ">"
+OP_GE = ">="
+OP_LT = "<"
+OP_LE = "<="
+OP_EQ = "=="
+OP_NE = "!="
+OP_NOT = "!"
+OP_AND = "&&"
+OP_OR = "||"
 
 OpenParenthesis = "("
 CloseParenthesis = ")"
@@ -150,8 +159,17 @@ False = "false"
   {OP_SUB}                                     {System.out.println("OP_SUB"); return symbol(ParserSym.SUB); }
   {OP_MULT}                                    {System.out.println("OP_MULT"); return symbol(ParserSym.MULT); }
   {OP_DIV}                                     {System.out.println("OP_DIV"); return symbol(ParserSym.DIV); }
+  {OP_GT}                                   {System.out.println("OP_GT"); return symbol(ParserSym.OP_GT); }
+  {OP_GE}                                   {System.out.println("OP_ASIG"); return symbol(ParserSym.OP_GE); }
+  {OP_LT}                                   {System.out.println("OP_GE"); return symbol(ParserSym.OP_LT); }
+  {OP_LE}                                   {System.out.println("OP_LE"); return symbol(ParserSym.OP_LE); }
+  {OP_EQ}                                   {System.out.println("OP_EQ"); return symbol(ParserSym.OP_EQ); }
+  {OP_NE}                                   {System.out.println("OP_NE"); return symbol(ParserSym.OP_NE); }
+  {OP_NOT}                                   {System.out.println("OP_NOT"); return symbol(ParserSym.OP_NOT); }
+  {OP_AND}                                   {System.out.println("OP_AND"); return symbol(ParserSym.OP_AND); }
+  {OP_OR}                                   {System.out.println("OP_OR"); return symbol(ParserSym.OP_OR); }
   {OP_ASIG}                                   {System.out.println("OP_ASIG"); return symbol(ParserSym.ASSIG); }
-  {OpenBracket}                             {System.out.println("OPEN_BRACKER"); return symbol(ParserSym.OPEN_BRACKET); }
+  {OpenBracket}                             {System.out.println("OPEN_BRACKET"); return symbol(ParserSym.OPEN_BRACKET); }
   {CloseBracket}                            {System.out.println("CLOSE_BRACKET"); return symbol(ParserSym.CLOSE_BRACKET); }
   {OpenSqrBracket}                             {System.out.println("OPEN_SQR_BRACKET"); return symbol(ParserSym.OPEN_SQR_BRACKET); }
   {CloseSqrBracket}                             {System.out.println("CLOSE_SQR_BRACKET"); return symbol(ParserSym.CLOSE_SQR_BRACKET); }

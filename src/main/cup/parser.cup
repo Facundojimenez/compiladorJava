@@ -22,6 +22,16 @@ terminal FLOAT_CONSTANT;
 terminal STRING_CONSTANT;
 terminal IDENTIFIER;
 
+terminal OP_GT;
+terminal OP_GE;
+terminal OP_LT;
+terminal OP_LE;
+terminal OP_EQ;
+terminal OP_NE;
+terminal OP_NOT;
+terminal OP_AND;
+terminal OP_OR;
+
 //Aca van los nuestros
 
 //palabras reservadas que pide el enunciado
@@ -54,6 +64,9 @@ non terminal assignment;
 non terminal expression;
 non terminal term;
 non terminal factor;
+non terminal if_expresion;
+non terminal logic_condition;
+non terminal logic_expression;
 
 //Aca van los nuestros
 
@@ -62,12 +75,15 @@ non terminal factor;
 
 start with program;
 program ::= block;
+program ::= ; //para el caso en que un programa solo hay comentarios
 block ::= block sentence;
 block ::= sentence;
 sentence ::= assignment {: System.out.println("End"); :};
-sentence ::= WRITE OPEN_PAR STRING_CONSTANT CLOSE_PAR {: System.out.println("Write CONST"); :};
-sentence ::= WRITE OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Write I"); :};
 
+sentence ::= WRITE OPEN_PAR STRING_CONSTANT CLOSE_PAR {: System.out.println("Write CONST"); :};
+sentence ::= WRITE OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Write ID"); :};
+sentence ::= READ OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Read ID"); :};
+sentence ::= if_expresion {: System.out.println("if expression"); :};
 
 assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
 assignment ::= IDENTIFIER ASSIG STRING_CONSTANT {: System.out.println("Assignment"); :};
@@ -81,6 +97,11 @@ factor ::= IDENTIFIER:id  {: System.out.println("Id: " + id); :};
 factor ::= INTEGER_CONSTANT:constant {: System.out.println("Integer Constant: " + constant ); :};
 factor ::= FLOAT_CONSTANT:constant {: System.out.println("Float Constant: " + constant ); :};
 factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("Factor = (Expression)"); :};
+
+if_expresion ::= IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET | IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET ELSE OPEN_BRACKET block CLOSE_BRACKET;
+logic_condition ::= logic_expression OP_AND logic_expression | logic_expression OP_OR logic_expression | OP_NOT logic_expression;
+logic_condition ::= logic_expression;
+logic_expression ::= factor OP_GT factor;
 
 //acá abajo van nuestras definiciones de NO terminales
 
