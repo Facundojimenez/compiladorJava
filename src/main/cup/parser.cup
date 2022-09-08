@@ -1,8 +1,10 @@
 package lyc.compiler;
 
 import java_cup.runtime.*;
+import lyc.compiler.files.SymbolTableGenerator;
 
 class Parser;
+
 
 
 //--------- Terminals
@@ -93,21 +95,37 @@ sentence ::= while_expresion {: System.out.println("while expression"); :};
 
 
 init_block ::= INIT OPEN_BRACKET block CLOSE_BRACKET;
-identifier_list ::= identifier_list COMMA IDENTIFIER;
-identifier_list ::= IDENTIFIER;
 sentence ::= identifier_list COLON INT | identifier_list COLON FLOAT | identifier_list COLON STRING;
+identifier_list ::= identifier_list COMMA IDENTIFIER:id {: System.out.println("Se cargó el identifier \"" + id +"\" en la tabla de simbolos"  ); SymbolTableGenerator.agregarLexema(id.toString(), "ID"); :};
+identifier_list ::= IDENTIFIER:id {: System.out.println("Se cargó el identifier \"" + id +"\" en la tabla de simbolos"  ); SymbolTableGenerator.agregarLexema(id.toString(), "ID"); :};
 
-assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
-assignment ::= IDENTIFIER ASSIG STRING_CONSTANT {: System.out.println("Assignment"); :};
+assignment ::= IDENTIFIER:id ASSIG expression {:
+        System.out.println("Assignment");
+        SymbolTableGenerator.agregarLexema(id.toString(), "ID");
+:};
+assignment ::= IDENTIFIER:id ASSIG STRING_CONSTANT:constant {:
+        System.out.println("Assignment");
+        SymbolTableGenerator.agregarLexema(id.toString(), "ID");
+        SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+ :};
 expression ::= expression PLUS term {: System.out.println("+"); :};
 expression ::= expression SUB term {: System.out.println("-"); :};
 expression ::= term {: System.out.println("Expression = Term"); :};
 term ::= term MULT factor {: System.out.println("*"); :};
 term ::= term DIV factor {: System.out.println("/"); :};
 term ::= factor {: System.out.println("Term = factor"); :};
-factor ::= IDENTIFIER:id  {: System.out.println("Id: " + id); :};
-factor ::= INTEGER_CONSTANT:constant {: System.out.println("Integer Constant: " + constant ); :};
-factor ::= FLOAT_CONSTANT:constant {: System.out.println("Float Constant: " + constant ); :};
+factor ::= IDENTIFIER:id  {:
+        System.out.println("Id: " + id);
+        SymbolTableGenerator.agregarLexema(id.toString(), "ID");
+ :};
+factor ::= INTEGER_CONSTANT:constant {:
+        System.out.println("Integer Constant: " + constant );
+        SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+:};
+factor ::= FLOAT_CONSTANT:constant {:
+        System.out.println("Float Constant: " + constant );
+        SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+:};
 factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("Factor = (Expression)"); :};
 
 if_expresion ::= IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET | IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET ELSE OPEN_BRACKET block CLOSE_BRACKET;
@@ -116,7 +134,6 @@ logic_condition ::= logic_expression | OP_NOT logic_expression;
 logic_expression ::= factor OP_GT factor | factor OP_GE factor | factor OP_LT factor | factor OP_LE factor | factor OP_NE factor | factor OP_EQ factor;
 
 while_expresion ::=  WHILE OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET;
-
 
 
 

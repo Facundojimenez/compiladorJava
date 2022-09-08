@@ -23,6 +23,7 @@ public final class Compiler {
             Parser parser = ParserFactory.create(reader);
             parser.parse();
             FileOutputWriter.writeOutput("symbol-table.txt", new SymbolTableGenerator());
+            SymbolTableGenerator.mostrarTabla();
             FileOutputWriter.writeOutput("intermediate-code.txt", new SymbolTableGenerator());
             FileOutputWriter.writeOutput("final.asm", new SymbolTableGenerator());
         } catch (IOException e) {
