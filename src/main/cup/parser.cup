@@ -35,11 +35,12 @@ terminal OP_OR;
 //Aca van los nuestros
 
 //palabras reservadas que pide el enunciado
-terminal INIT; // declarar un bloque de variables
-terminal COLON; //Son los dos puntos " : "
-terminal SEMI_COLON; //Son los dos puntos ";"
-terminal READ; //entrada
-terminal WRITE; //salida
+terminal INIT;          // declarar un bloque de variables
+terminal COLON;         // ":"
+terminal SEMI_COLON;    // ";"
+terminal COMMA;         // ","
+terminal READ;          //entrada
+terminal WRITE;         //salida
 
 ///palabras reservadas de java
 terminal IF;
@@ -65,8 +66,11 @@ non terminal expression;
 non terminal term;
 non terminal factor;
 non terminal if_expresion;
+non terminal while_expresion;
 non terminal logic_condition;
 non terminal logic_expression;
+non terminal init_block;
+non terminal identifier_list;
 
 //Aca van los nuestros
 
@@ -78,12 +82,20 @@ program ::= block;
 program ::= ; //para el caso en que un programa solo hay comentarios
 block ::= block sentence;
 block ::= sentence;
+block ::= init_block;
 sentence ::= assignment {: System.out.println("End"); :};
 
 sentence ::= WRITE OPEN_PAR STRING_CONSTANT CLOSE_PAR {: System.out.println("Write CONST"); :};
 sentence ::= WRITE OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Write ID"); :};
 sentence ::= READ OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Read ID"); :};
 sentence ::= if_expresion {: System.out.println("if expression"); :};
+sentence ::= while_expresion {: System.out.println("while expression"); :};
+
+
+init_block ::= INIT OPEN_BRACKET block CLOSE_BRACKET;
+identifier_list ::= identifier_list COMMA IDENTIFIER;
+identifier_list ::= IDENTIFIER;
+sentence ::= identifier_list COLON INT | identifier_list COLON FLOAT | identifier_list COLON STRING;
 
 assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
 assignment ::= IDENTIFIER ASSIG STRING_CONSTANT {: System.out.println("Assignment"); :};
@@ -103,7 +115,7 @@ logic_condition ::= logic_expression OP_AND logic_expression | logic_expression 
 logic_condition ::= logic_expression | OP_NOT logic_expression;
 logic_expression ::= factor OP_GT factor | factor OP_GE factor | factor OP_LT factor | factor OP_LE factor | factor OP_NE factor | factor OP_EQ factor;
 
-
+while_expresion ::=  WHILE OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET;
 
 
 

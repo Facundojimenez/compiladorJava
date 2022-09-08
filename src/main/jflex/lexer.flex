@@ -62,6 +62,7 @@ OpenBracket = "{"
 CloseBracket = "}"
 Colon = ":"
 Semicolon = ";"
+Comma = ","
 
 
 
@@ -177,6 +178,7 @@ False = "false"
   {CloseParenthesis}                             {System.out.println("CLOSE_PAR"); return symbol(ParserSym.CLOSE_PAR); }
   {Colon}                                    {System.out.println("COLON"); return symbol(ParserSym.COLON); }
   {Semicolon}                                {System.out.println("SEMI_COLON"); return symbol(ParserSym.SEMI_COLON); }
+  {Comma}                                {System.out.println("COMMA"); return symbol(ParserSym.COMMA); }
 
   /* whitespace */
   {WhiteSpace}                             { /* ignore */ }
