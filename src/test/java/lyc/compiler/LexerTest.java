@@ -175,15 +175,15 @@ public class LexerTest {
   public void assignmentWithExpressions() throws Exception {
     scan("c = d * ( e - 21 ) / 4");
     assertThat(nextToken()).isEqualTo(ParserSym.IDENTIFIER);
-    assertThat(nextToken()).isEqualTo(ParserSym.ASSIG);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_ASSIG);
     assertThat(nextToken()).isEqualTo(ParserSym.IDENTIFIER);
-    assertThat(nextToken()).isEqualTo(ParserSym.MULT);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_MULT);
     assertThat(nextToken()).isEqualTo(ParserSym.OPEN_PAR);
     assertThat(nextToken()).isEqualTo(ParserSym.IDENTIFIER);
-    assertThat(nextToken()).isEqualTo(ParserSym.SUB);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_SUB);
     assertThat(nextToken()).isEqualTo(ParserSym.INTEGER_CONSTANT);
     assertThat(nextToken()).isEqualTo(ParserSym.CLOSE_PAR);
-    assertThat(nextToken()).isEqualTo(ParserSym.DIV);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_DIV);
     assertThat(nextToken()).isEqualTo(ParserSym.INTEGER_CONSTANT);
     assertThat(nextToken()).isEqualTo(ParserSym.EOF);
   }

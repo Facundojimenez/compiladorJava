@@ -8,11 +8,11 @@ class Parser;
 
 
 //--------- Terminals
-terminal ASSIG;
-terminal PLUS;
-terminal SUB;
-terminal MULT;
-terminal DIV;
+terminal OP_ASSIG;
+terminal OP_PLUS;
+terminal OP_SUB;
+terminal OP_MULT;
+terminal OP_DIV;
 terminal OPEN_BRACKET; // {
 terminal CLOSE_BRACKET;
 terminal OPEN_SQR_BRACKET; // [
@@ -43,6 +43,7 @@ terminal SEMI_COLON;    // ";"
 terminal COMMA;         // ","
 terminal READ;          //entrada
 terminal WRITE;         //salida
+terminal REPEAT;         //funcion que pide el enunciado
 
 ///palabras reservadas de java
 terminal IF;
@@ -67,8 +68,9 @@ non terminal assignment;
 non terminal expression;
 non terminal term;
 non terminal factor;
-non terminal if_expresion;
-non terminal while_expresion;
+non terminal if_expression;
+non terminal while_expression;
+non terminal repeat_expression;
 non terminal logic_condition;
 non terminal logic_expression;
 non terminal init_block;
@@ -85,56 +87,73 @@ program ::= ; //para el caso en que un programa solo hay comentarios
 block ::= block sentence;
 block ::= sentence;
 block ::= init_block;
-sentence ::= assignment {: System.out.println("End"); :};
+sentence ::= assignment {: System.out.println("--Program end--"); :};
 
-sentence ::= WRITE OPEN_PAR STRING_CONSTANT CLOSE_PAR {: System.out.println("Write CONST"); :};
-sentence ::= WRITE OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Write ID"); :};
-sentence ::= READ OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("Read ID"); :};
-sentence ::= if_expresion {: System.out.println("if expression"); :};
-sentence ::= while_expresion {: System.out.println("while expression"); :};
+sentence ::= WRITE OPEN_PAR STRING_CONSTANT CLOSE_PAR {: System.out.println("RULE: Write CONST"); :};
+sentence ::= WRITE OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("RULE: Write ID"); :};
+sentence ::= READ OPEN_PAR IDENTIFIER CLOSE_PAR {: System.out.println("RULE: Read ID"); :};
+sentence ::= if_expression {: System.out.println("RULE: if_expression"); :};
+sentence ::= while_expression {: System.out.println("RULE: while_expression"); :};
+sentence ::= repeat_expression {: System.out.println("RULE: repeat_expression"); :};
 
 
-init_block ::= INIT OPEN_BRACKET block CLOSE_BRACKET;
+init_block ::= INIT OPEN_BRACKET block CLOSE_BRACKET {: System.out.println("RULE: init_block"); :};
 sentence ::= identifier_list COLON INT | identifier_list COLON FLOAT | identifier_list COLON STRING;
 identifier_list ::= identifier_list COMMA IDENTIFIER:id {: System.out.println("Se cargó el identifier \"" + id +"\" en la tabla de simbolos"  ); SymbolTableGenerator.agregarLexema(id.toString(), "ID"); :};
 identifier_list ::= IDENTIFIER:id {: System.out.println("Se cargó el identifier \"" + id +"\" en la tabla de simbolos"  ); SymbolTableGenerator.agregarLexema(id.toString(), "ID"); :};
 
-assignment ::= IDENTIFIER:id ASSIG expression {:
-        System.out.println("Assignment");
+/* Asignacion de expresion a una variable*/
+assignment ::= IDENTIFIER:id OP_ASSIG expression {:
+        System.out.println("RULE: id = expression");
         SymbolTableGenerator.agregarLexema(id.toString(), "ID");
 :};
-assignment ::= IDENTIFIER:id ASSIG STRING_CONSTANT:constant {:
-        System.out.println("Assignment");
+/* Asignacion de constante string a una variable*/
+assignment ::= IDENTIFIER:id OP_ASSIG STRING_CONSTANT:constant {:
+        System.out.println("RULE: id = str_const");
         SymbolTableGenerator.agregarLexema(id.toString(), "ID");
         SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
  :};
-expression ::= expression PLUS term {: System.out.println("+"); :};
-expression ::= expression SUB term {: System.out.println("-"); :};
-expression ::= term {: System.out.println("Expression = Term"); :};
-term ::= term MULT factor {: System.out.println("*"); :};
-term ::= term DIV factor {: System.out.println("/"); :};
-term ::= factor {: System.out.println("Term = factor"); :};
+
+ //Esto esta comentado porque ante algun lio podemos debuggear con los System.Out, pero sino confunde que haya tantas impresiones en consola
+//expression ::= expression OP_PLUS term {: System.out.println("+"); :};
+//expression ::= expression OP_SUB term {: System.out.println("-"); :};
+//expression ::= term {: System.out.println("Expression = Term"); :};
+//term ::= term OP_MULT factor {: System.out.println("*"); :};
+//term ::= term OP_DIV factor {: System.out.println("/"); :};
+//term ::= factor {: System.out.println("Term = factor"); :};
+
+expression ::= expression OP_PLUS term;
+expression ::= expression OP_SUB term;
+expression ::= term;
+term ::= term OP_MULT factor;
+term ::= term OP_DIV factor;
+term ::= factor;
 factor ::= IDENTIFIER:id  {:
-        System.out.println("Id: " + id);
+//        System.out.println("Id: " + id);
         SymbolTableGenerator.agregarLexema(id.toString(), "ID");
  :};
 factor ::= INTEGER_CONSTANT:constant {:
-        System.out.println("Integer Constant: " + constant );
+//        System.out.println("Integer Constant: " + constant );
         SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
 :};
 factor ::= FLOAT_CONSTANT:constant {:
-        System.out.println("Float Constant: " + constant );
+//        System.out.println("Float Constant: " + constant );
         SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
 :};
-factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("Factor = (Expression)"); :};
+factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("RULE: Factor = (Expression)"); :};
 
-if_expresion ::= IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET | IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET ELSE OPEN_BRACKET block CLOSE_BRACKET;
+
+/* Expresiones logicas de comparaciones, igualdad, etc*/
 logic_condition ::= logic_expression OP_AND logic_expression | logic_expression OP_OR logic_expression; ///esta ultima parte está dudosa
 logic_condition ::= logic_expression | OP_NOT logic_expression;
 logic_expression ::= factor OP_GT factor | factor OP_GE factor | factor OP_LT factor | factor OP_LE factor | factor OP_NE factor | factor OP_EQ factor;
 
-while_expresion ::=  WHILE OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET;
-
+if_expression ::= IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET | IF OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET ELSE OPEN_BRACKET block CLOSE_BRACKET;
+while_expression ::=  WHILE OPEN_PAR logic_condition CLOSE_PAR OPEN_BRACKET block CLOSE_BRACKET;
+repeat_expression ::= REPEAT INTEGER_CONSTANT:constant OPEN_BRACKET block CLOSE_BRACKET  {:
+//        System.out.println("Integer Constant: " + constant );
+        SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+:};
 
 
 

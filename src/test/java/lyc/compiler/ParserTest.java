@@ -24,6 +24,13 @@ public class ParserTest {
 
     @Disabled
     @Test
+    public void repeat() throws Exception {
+        compilationSuccessful("repeat 5 { a = 1 }");
+//        compilationSuccessful("REPEAT");
+    }
+
+    @Disabled
+    @Test
     public void syntaxError() {
         compilationError("1234");
     }
