@@ -74,7 +74,7 @@ non terminal repeat_expression;
 non terminal logic_condition;
 non terminal logic_expression;
 non terminal init_block;
-non terminal identifier_list;
+non terminal ArrayList<identifier_list> identifier_list;
 
 //Aca van los nuestros
 
@@ -98,7 +98,9 @@ sentence ::= repeat_expression {: System.out.println("RULE: repeat_expression");
 
 
 init_block ::= INIT OPEN_BRACKET block CLOSE_BRACKET {: System.out.println("RULE: init_block"); :};
-sentence ::= identifier_list COLON INT | identifier_list COLON FLOAT | identifier_list COLON STRING;
+sentence ::= identifier_list COLON INT ;
+sentence ::= identifier_list COLON FLOAT;
+sentence ::= identifier_list COLON STRING;
 identifier_list ::= identifier_list COMMA IDENTIFIER:id {: System.out.println("Se cargó el identifier \"" + id +"\" en la tabla de simbolos"  ); SymbolTableGenerator.agregarLexema(id.toString(), "ID"); :};
 identifier_list ::= IDENTIFIER:id {: System.out.println("Se cargó el identifier \"" + id +"\" en la tabla de simbolos"  ); SymbolTableGenerator.agregarLexema(id.toString(), "ID"); :};
 
@@ -111,7 +113,15 @@ assignment ::= IDENTIFIER:id OP_ASSIG expression {:
 assignment ::= IDENTIFIER:id OP_ASSIG STRING_CONSTANT:constant {:
         System.out.println("RULE: id = str_const");
         SymbolTableGenerator.agregarLexema(id.toString(), "ID");
-        SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+
+        //le saco las comillas al inicio y el final de la cadena para guardarlo en la tabla
+        String str_lexema = constant.toString();
+        str_lexema = str_lexema.substring(1, str_lexema.length() - 1);
+
+        SymbolTableGenerator.agregarLexema(str_lexema, "CTE");
+        SymbolTableGenerator.setValor(str_lexema, "CTE", str_lexema);
+        SymbolTableGenerator.setLongitud(str_lexema);
+
  :};
 
  //Esto esta comentado porque ante algun lio podemos debuggear con los System.Out, pero sino confunde que haya tantas impresiones en consola
@@ -135,10 +145,12 @@ factor ::= IDENTIFIER:id  {:
 factor ::= INTEGER_CONSTANT:constant {:
 //        System.out.println("Integer Constant: " + constant );
         SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+        SymbolTableGenerator.setValor(constant.toString(), "CTE", constant.toString());
 :};
 factor ::= FLOAT_CONSTANT:constant {:
 //        System.out.println("Float Constant: " + constant );
         SymbolTableGenerator.agregarLexema(constant.toString(), "CTE");
+        SymbolTableGenerator.setValor(constant.toString(), "CTE", constant.toString());
 :};
 factor ::= OPEN_PAR expression CLOSE_PAR {: System.out.println("RULE: Factor = (Expression)"); :};
 
