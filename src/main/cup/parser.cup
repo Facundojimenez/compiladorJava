@@ -74,7 +74,7 @@ non terminal repeat_expression;
 non terminal logic_condition;
 non terminal logic_expression;
 non terminal init_block;
-non terminal ArrayList<identifier_list> identifier_list;
+non terminal identifier_list;
 
 //Aca van los nuestros
 
